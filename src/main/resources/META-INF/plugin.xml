@@ -1,0 +1,40 @@
+<idea-plugin>
+    <id>fr.plbls.graylog-log-shipper</id>
+    <name>Graylog Log Shipper</name>
+    <vendor url="https://plbls.fr">plbls</vendor>
+
+    <description><![CDATA[
+    Streams the console output of your Run/Debug configurations to a Graylog GELF input (TCP, UDP or HTTP).
+    <ul>
+      <li>JSON log lines (Logstash/Logback, ECS, pino…) become Graylog fields: nested objects are flattened
+          (<code>http.status</code> → <code>http_status</code>), strings containing JSON stay plain strings.</li>
+      <li>Plain-text logs: the level is detected and stack traces are grouped into one message.</li>
+      <li>Every message carries the project, run configuration, executor and session, plus your own static
+          fields, so you can route it to a dedicated stream.</li>
+    </ul>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <projectListeners>
+        <listener class="fr.plbls.graylogshipper.ide.RunLogExecutionListener"
+                  topic="com.intellij.execution.ExecutionListener"/>
+    </projectListeners>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable parentId="tools"
+                                 id="fr.plbls.graylogshipper.settings"
+                                 instance="fr.plbls.graylogshipper.ide.ShipperConfigurable"
+                                 displayName="Graylog Log Shipper"/>
+        <notificationGroup id="Graylog Log Shipper" displayType="BALLOON"/>
+    </extensions>
+
+    <actions>
+        <action id="fr.plbls.graylogshipper.Toggle"
+                class="fr.plbls.graylogshipper.ide.ToggleShippingAction"
+                text="Envoyer les logs Run/Debug vers Graylog"
+                description="Active ou coupe l'envoi de la sortie console des Run/Debug vers Graylog">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>

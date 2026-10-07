@@ -74,6 +74,7 @@ Noms réservés par Graylog (`id`, `source`, `host`, `version`, `message`…) : 
 - **Activé** (aussi dans le menu *Tools ▸ Envoyer les logs Run/Debug vers Graylog*, effet immédiat même sur un process en cours).
 - **Protocole / hôte / port / chemin HTTP** — TCP conseillé en local (fiable et ordonné).
 - **Configurations incluses / exclues** — regex sur le nom de la Run config (ex. exclure `Test|Tests in`).
+- **Dates sans fuseau** — pour un `@timestamp` sans `Z` ni décalage (`2026-10-06T13:53:12`) : lu en **UTC** (par défaut) ou dans le fuseau de l'IDE. Une date avec `Z` ou `+02:00` est toujours respectée telle quelle.
 - **Séparateur des sous-objets** — `_` (par défaut) ou `.`.
 - **Longueur max d'un champ** — 10 000 caractères par défaut : OpenSearch refuse un champ texte « keyword » de plus de 32 766 octets.
 - **Tout envoyer en texte** — utile si un même champ est tantôt nombre, tantôt texte (conflit de type → message rejeté à l'indexation).
